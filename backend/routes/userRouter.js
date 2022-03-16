@@ -10,6 +10,10 @@ const validUser = require('../middlewares/validUser')
 //for test it in postman check formData in body blank and select file (not text)
 // & write the key (in this exemple "image" but you can choose whatever you want) and the path of your img.
 
+route.get("/list", (_req, res) => {
+    res.json(users)
+})
+
 route.post("/", upload.single("image"), validUser, (req, res) => {
 
     users.push({

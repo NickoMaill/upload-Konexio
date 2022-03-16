@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express();
-const userRouter = require('./routes/userRouter')
+const userRouter = require('./routes/userRouter');
 
-const PORT = 8000
+const PORT = 8000;
 
 app.use(express.static('public'));
 app.use(express.json());

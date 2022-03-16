@@ -1,7 +1,7 @@
-export default function form(){
+export default function form(props){
     return(
         <>
-            <input></input>
+            <input type={props.type} onChange={props.onChange}></input>
         </>
     )
 }

@@ -14,7 +14,6 @@ route.post("/", upload.single("image"), validUser, (req, res) => {
 
     users.push({
         userName: req.body.userName,
-        profilePic: req.file.path,
     })
 
     fs.renameSync(
@@ -22,6 +21,7 @@ route.post("/", upload.single("image"), validUser, (req, res) => {
         path.join(req.file.destination, req.file.originalname)
     );
     res.json(users);
+    console.log(users);
 });
 
 module.exports = route;

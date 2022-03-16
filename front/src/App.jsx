@@ -6,7 +6,18 @@ export default function App() {
 
     const [image, setImage] = useState("")
     const [userName, setUsername] = useState("");
-    // const [isUpload, setIsUpload] = useState(false)
+    const [userList, setUserList] = useState([])
+    const [isUpload, setIsUpload] = useState(false)
+
+
+    useEffect(() => {
+        fetch("http://localhost:8000/upload")
+            .then(res => res.json())
+            .then(data => {
+                setUserList(data)
+                setIsUpload(true)
+            })
+    }, [])
 
     const send = () => {
         const formData = new FormData()
@@ -15,29 +26,21 @@ export default function App() {
         formData.append("userName", userName)
 
         fetch("http://localhost:8000/upload", {
-            mode: "no-cors",
             method: "POST",
             body: formData,
-        }).then(res => {
-            // setIsUpload(true)
-            console.log(res.body);
         })
+            .then(res => res.json())
+            .then(data => {
+
+                console.log(data);
+                setUserList(data)
+                console.info("uploaded");
+            })
     };
 
-
-    // if (isUpload === true) {
-    //     fetch("http://localhost:8000/upload/list", {
-    //         mode: "no-cors",
-    //         method:"GET",
-    //     })
-    //         .then(res => {
-    //             console.log(res);
-    //         })
-
-    // } else {
-    //     console.log('oups');
-    // }
-
+    if (isUpload !== true) {
+        return <h2>Loading...</h2>
+    }
 
     return (
         <>
@@ -51,6 +54,11 @@ export default function App() {
                 onChange={(e) => setImage(e.target.files[0])}
             />
             <Button onClick={send}> --- SEND --- </Button>
+            <ul>
+                {userList && userList.map((user, i) => {
+                    return <li key={i}>{user.userName}</li>
+                })}
+            </ul>
         </>
     )
 }

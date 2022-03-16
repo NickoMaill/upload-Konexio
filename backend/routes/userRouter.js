@@ -5,27 +5,31 @@ const upload = multer({ dest: 'public/uploads' })
 const fs = require('fs');
 const path = require('path');
 const users = require('../data/users.json')
-const validUser = require('../middlewares/validUser')
+const validUser = require('../middleware/validUserName')
+const cors = require('../middleware/cors')
+const dayjs = require('dayjs')
 
 //for test it in postman check formData in body blank and select file (not text)
 // & write the key (in this exemple "image" but you can choose whatever you want) and the path of your img.
 
-route.get("/list", (_req, res) => {
+route.get("/", cors, (_req, res) => {
+
     res.json(users)
 })
 
-route.post("/", upload.single("image"), validUser, (req, res) => {
-
+route.post("/", upload.single("image"), validUser, cors, (req, res) => {
+    let type = req.file.mimetype
+    type = test.split("").splice(6, 8).join("")
     users.push({
         userName: req.body.userName,
     })
 
     fs.renameSync(
         req.file.path,
-        path.join(req.file.destination, req.file.originalname)
+        path.join(req.file.destination, `${req.body.userName}-${dayjs().format('DD-MM-YYYY-HH:mm')}.${test}`)
     );
-    res.json(users);
     console.log(users);
+    res.json(users);
 });
 
 module.exports = route;

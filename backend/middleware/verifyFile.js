@@ -11,7 +11,7 @@ function checkTypeFile(req, res, next) {
     if (req.file.size > 5000000) {
         res.status(400).send("size too heavy")
     }
-
+    
     next();
 }
 

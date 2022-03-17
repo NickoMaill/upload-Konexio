@@ -14,7 +14,6 @@ const dayjs = require('dayjs')
 // & write the key (in this exemple "image" but you can choose whatever you want) and the path of your img.
 
 route.get("/", cors, (_req, res) => {
-
     res.json(users)
 })
 

@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const users = require('../data/users.json')
 const validUser = require('../middleware/validUserName')
+const verifyTypeFile = require('../middleware/verifyFile')
 const cors = require('../middleware/cors')
 const dayjs = require('dayjs')
 
@@ -17,16 +18,16 @@ route.get("/", cors, (_req, res) => {
     res.json(users)
 })
 
-route.post("/", upload.single("image"), validUser, cors, (req, res) => {
-    let type = req.file.mimetype
-    type = test.split("").splice(6, 8).join("")
+route.post("/", upload.single("image"), validUser, verifyTypeFile, cors, (req, res) => {
+
+    let type = path.extname(req.file.originalname)
     users.push({
         userName: req.body.userName,
     })
 
     fs.renameSync(
         req.file.path,
-        path.join(req.file.destination, `${req.body.userName}-${dayjs().format('DD-MM-YYYY-HH:mm')}.${test}`)
+        path.join(req.file.destination, `${req.body.userName}-${dayjs().format('DD-MM-YYYY-HH:mm')}.${type}`)
     );
     console.log(users);
     res.json(users);
